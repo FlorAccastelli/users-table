@@ -45,35 +45,35 @@ export default function Table({ data }) {
 
 
   return (
-    <main className="flex items-center justify-center w-screen h-screen bg-gray-100">
-        <div className="text-center">
-            <div className="flex justify-between mb-4">
-                <h3 className="text-lg font-bold p-2">USERS</h3>
+    <main className="flex items-center justify-center w-screen h-screen bg-gray-100 p-4">
+        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-4 overflow-x-auto">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-2xl font-semibold text-gray-800">USERS</h3>
                 <input 
                     placeholder="Search user"
-                    className="text-slate-600 rounded-lg"
+                    className="border border-gray-300 rounded-lg p-2 w-1/2"
                     value={value}
                     onChange={handleInput}
                 />
             </div>
             {!filteredData || filteredData.length === 0 ? (
-                <p>Not found users</p> 
+                <p className="text-gray-500">No users found</p> 
             ): (
-                <table className="table-fixed bg-[#A5B4FC] w-auto mx-auto border-collapse border-spacing-2 rounded-lg">
-                    <caption class="caption-top">
-                        Users
+                <table className="min-w-full table-fixed bg-[#F9FAFB] border border-gray-300 rounded-lg">
+                    <caption class="caption-top text-lg font-medium text-gray-700 mb-2">
+                        List of Users
                     </caption>
                 <thead>
-                    <tr className="text-xl font-medium text-gray-800">
+                    <tr className="bg-gray-200 text-gray-700">
                     {titles.map((title) => (
                         <th 
                         key={title}
                         onClick={title === "username" ? handleClick : null}
-                        className={`${title === 'username' ? "cursor-pointer" : ""}`}
+                        className={`${title === 'username' ? "cursor-pointer" : "cursor-default"} items-center space-x-2`}
                         >
                             {title.toUpperCase()}
                             {title === "username" && (
-                                <span>
+                                <span className="text-gray-600">
                                     {sortOrder === 'asc' ? <TbTriangleFilled /> 
                                     : sortOrder === 'desc' ? <TbTriangleInvertedFilled /> 
                                     : <MdOutlineToggleOff />}
