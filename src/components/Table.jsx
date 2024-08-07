@@ -36,8 +36,10 @@ export default function Table({ data }) {
                     onChange={handleInput}
                 />
             </div>
-            
-            <table className="table-fixed bg-[#A5B4FC] w-auto mx-auto border-collapse border-spacing-2 rounded-lg">
+            {!filteredData || filteredData.length === 0 ? (
+                <p>Not found users</p> 
+            ): (
+                <table className="table-fixed bg-[#A5B4FC] w-auto mx-auto border-collapse border-spacing-2 rounded-lg">
                 <thead>
                     <tr className="text-xl font-medium text-gray-800">
                     {titles.map((title) => (
@@ -51,6 +53,7 @@ export default function Table({ data }) {
                     ))}
                 </tbody>
             </table>
+            )} 
         </div>
     </main>
   )
