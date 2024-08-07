@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Users from "./Users";
 import { useRouter } from "next/navigation";
+import { MdOutlineToggleOff } from "react-icons/md";
+import { TbTriangleFilled, TbTriangleInvertedFilled } from "react-icons/tb";
 
 export default function Table({ data }) {
     const titles = Object.keys(data[0]);
@@ -10,9 +12,27 @@ export default function Table({ data }) {
 
     const [value, setValue] = useState("")
     const [filteredData, setFilteredData] = useState(data);
+    const [sortOrder, setSortOrder] = useState('');
 
     const handleInput = (event) => {
         setValue(event.target.value);
+    }
+
+    const handleClick = () => {
+        setSortOrder(prevOrder => {
+            const newOrder = prevOrder === 'asc' ? 'desc' : 'asc';
+            const sortedData = [...filteredData].sort((a, b) => {
+                if (newOrder === 'asc') {
+                    return a.username.localeCompare(b.username);
+                } else if (newOrder === 'desc') {
+                    return b.username.localeCompare(a.username);
+                } else {
+                    return 0;
+                }
+            });
+            setFilteredData(sortedData);
+            return newOrder;
+        });
     }
 
     useEffect(() => {
@@ -40,10 +60,26 @@ export default function Table({ data }) {
                 <p>Not found users</p> 
             ): (
                 <table className="table-fixed bg-[#A5B4FC] w-auto mx-auto border-collapse border-spacing-2 rounded-lg">
+                    <caption class="caption-top">
+                        Users
+                    </caption>
                 <thead>
                     <tr className="text-xl font-medium text-gray-800">
                     {titles.map((title) => (
-                        <th key={title}>{title.toUpperCase()}</th>
+                        <th 
+                        key={title}
+                        onClick={title === "username" ? handleClick : null}
+                        className={`${title === 'username' ? "cursor-pointer" : ""}`}
+                        >
+                            {title.toUpperCase()}
+                            {title === "username" && (
+                                <span>
+                                    {sortOrder === 'asc' ? <TbTriangleFilled /> 
+                                    : sortOrder === 'desc' ? <TbTriangleInvertedFilled /> 
+                                    : <MdOutlineToggleOff />}
+                                </span>
+                            )}
+                        </th>
                     ))}
                     </tr>
                 </thead>
@@ -53,7 +89,7 @@ export default function Table({ data }) {
                     ))}
                 </tbody>
             </table>
-            )} 
+            )}
         </div>
     </main>
   )
