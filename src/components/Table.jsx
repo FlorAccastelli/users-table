@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Users from "./Users";
 
 export default function Table({ data }) {
     const titles = Object.keys(data[0])
@@ -42,16 +43,7 @@ export default function Table({ data }) {
                 </thead>
                 <tbody>
                     {filteredData.map((user) => (
-                    <tr key={user.id} className="rounded-lg border border-gray-200">
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.id}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.name}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.username}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.email}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.address.street}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.phone}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.website}</th>
-                        <th className="p-2 text-xs border  border-gray-200 rounded-lg">{user.company.name}</th>
-                    </tr>
+                    <Users user={user}/>
                     ))}
                 </tbody>
             </table>
