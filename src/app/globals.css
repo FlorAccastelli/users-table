@@ -2,6 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gradient-to-r from-green-400 to-blue-500;
-}
