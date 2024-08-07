@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Users from "./Users";
+import { useRouter } from "next/navigation";
 
 export default function Table({ data }) {
-    const titles = Object.keys(data[0])
+    const titles = Object.keys(data[0]);
+    const router = useRouter();
 
     const [value, setValue] = useState("")
     const [filteredData, setFilteredData] = useState(data);
@@ -18,7 +20,9 @@ export default function Table({ data }) {
             d.username.toLowerCase().match(value.toLowerCase())
         ))
         setFilteredData(dataFiltered)
+        router.push(`/?username=${value}`, undefined, { shallow: true })
     }, [value])
+
 
   return (
     <main className="flex items-center justify-center w-screen h-screen bg-gray-100">
