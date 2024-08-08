@@ -13,11 +13,23 @@ export default function Table({ data }) {
     const [value, setValue] = useState("")
     const [filteredData, setFilteredData] = useState(data);
     const [sortOrder, setSortOrder] = useState('');
+    const [activeCols, setActiveCols] = useState(
+        {
+            id: true,
+            name: false,
+            username: true,
+            email: true,
+            address: true,
+            phone: true,
+            website: true,
+            company: true
+        }
+    )
 
     const handleInput = (event) => {
         setValue(event.target.value);
     }
-
+    
     const handleClick = () => {
         setSortOrder(prevOrder => {
             const newOrder = prevOrder === 'asc' ? 'desc' : 'asc';
@@ -35,13 +47,23 @@ export default function Table({ data }) {
         });
     }
 
+    const handleState = (event) => {
+        const propName = event.target.value
+        /* console.log("prop name", propName)
+        console.log("active cols prop name previo al seteo", activeCols[propName]) */
+        activeCols[propName] = activeCols[propName] ? false : true;
+        setActiveCols(activeCols)
+        
+        console.log("active cols post seteo prop name", activeCols)
+    }
+
     useEffect(() => {
         const dataFiltered = data.filter((d) => (
             d.username.toLowerCase().match(value.toLowerCase())
         ))
         setFilteredData(dataFiltered)
         router.push(`/?username=${value}`, undefined, { shallow: true })
-    }, [value])
+    }, [value, activeCols])
 
 
   return (
@@ -55,6 +77,16 @@ export default function Table({ data }) {
                     value={value}
                     onChange={handleInput}
                 />
+                {titles.map((title) => (
+                    <label>
+                        <input 
+                        type="checkbox" 
+                        id={title} 
+                        value={title}
+                        onChange={handleState} />
+                        {title}
+                    </label>
+                ))}
             </div>
             {!filteredData || filteredData.length === 0 ? (
                 <p className="text-gray-500">No users found</p> 
@@ -71,7 +103,10 @@ export default function Table({ data }) {
                         onClick={title === "username" ? handleClick : null}
                         className={`${title === 'username' ? "cursor-pointer" : "cursor-default"} items-center space-x-2`}
                         >
-                            {title.toUpperCase()}
+                            {activeCols[title] &&
+                            title.toUpperCase()
+                            } 
+                            
                             {title === "username" && (
                                 <span className="text-gray-600">
                                     {sortOrder === 'asc' ? <TbTriangleFilled /> 
@@ -85,7 +120,7 @@ export default function Table({ data }) {
                 </thead>
                 <tbody>
                     {filteredData.map((user) => (
-                    <Users user={user}/>
+                    <Users user={user} activeCols={activeCols} />
                     ))}
                 </tbody>
             </table>
